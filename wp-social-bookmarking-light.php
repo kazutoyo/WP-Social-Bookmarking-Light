@@ -371,6 +371,21 @@ class WpSocialBookmarkingLight
         						.' allowTransparency="true"></iframe>');
     }
 
+     /**
+     * @brief Facebook Send Button
+     */
+    function facebook_send()
+    {
+        $options = wp_social_bookmarking_light_options();
+        $font = $options['facebook_send']['font'];
+        $colorscheme = $options['facebook_send']['colorscheme'];
+        
+        return $this->link_raw('<div id="fb-root"></div><script src="http://connect.facebook.net/en_US/all.js#appId=220480444633789&amp;xfbml=1"></script><fb:send href="'.$this->encode_url.'\"'
+        						.' font="'.$font.'"'
+        						.' colorscheme="'.$colorscheme.'"'
+        						.'></fb:send>');
+    }
+
    /**
     * @brief reddit
     */
@@ -482,6 +497,8 @@ function wp_social_bookmarking_light_default_options()
                                       'height' => '20'),
                   "hatena_button" => array('layout' => 'standard'),
                   'facebook_like' => array('action' => 'like',
+                                            'colorscheme' => 'light'),
+                  'facebook_send' => array('font' => 'font',
                                             'colorscheme' => 'light'),
     );
 }
@@ -720,6 +737,7 @@ function wsbl_update_services(is_simply)
     wsbl_options_toggle("twitter", is_simply);
     wsbl_options_toggle("hatena_button", is_simply);
     wsbl_options_toggle("facebook_like", is_simply);
+    wsbl_options_toggle("facebook_send", is_simply);
 }
 
 function wsbl_update_sortable()
@@ -818,6 +836,8 @@ function wp_social_bookmarking_light_options_page()
                           'hatena_button' => array('layout' => $_POST['hatena_button_layout']),
                           'facebook_like' => array('action' => $_POST['facebook_like_action'],
                                                     'colorscheme' => $_POST['facebook_like_colorscheme']),
+                          'facebook_send' => array( 'font' => $_POST['facebook_send_font'],
+                                                    'colorscheme' => $_POST['facebook_send_colorscheme']),
         );
         update_option( 'wp_social_bookmarking_light_options', $options );
         echo '<div class="updated"><p><strong>'.__( 'Options saved.', WP_SOCIAL_BOOKMARKING_LIGHT_DOMAIN ).'</strong></p></div>';
@@ -844,6 +864,7 @@ function wp_social_bookmarking_light_options_page()
             <li id='twitter_settings'><a href="#tabs-3"><span><?php _e("twitter") ?></span></a></li>
             <li id='hatena_button_settings'><a href="#tabs-4"><span><?php _e("hatena_button") ?></span></a></li>
             <li id='facebook_like_settings'><a href="#tabs-5"><span><?php _e("facebook_like") ?></span></a></li>
+            <li id='facebook_send_settings'><a href="#tabs-6"><span><?php _e("facebook_send") ?></span></a></li>
         </ul>
         <div id="tabs-1">
             <table class='form-table'>
@@ -1023,6 +1044,35 @@ function wp_social_bookmarking_light_options_page()
             </tr>
             </table>
         </div>
+
+        <div id="tabs-6">
+            <table class='form-table'>
+            <tr>
+            <th scope="row">Font:</th>
+            <td>
+            <select name='facebook_send_font'>
+            <option value='' <?php if( $options['facebook_send']['font'] == '' ) echo 'selected'; ?>></option>
+            <option value='arial' <?php if( $options['facebook_send']['font'] == 'arial' ) echo 'selected'; ?>>arial</option>
+            <option value='lucida grande' <?php if( $options['facebook_send']['font'] == 'lucida grande' ) echo 'selected'; ?>>lucida grande</option>
+            <option value='segoe ui' <?php if( $options['facebook_send']['font'] == 'segoe ui' ) echo 'selected'; ?>>segoe ui</option>
+            <option value='tahoma' <?php if( $options['facebook_send']['font'] == 'tahoma' ) echo 'selected'; ?>>tahoma</option>
+            <option value='trebuchet ms' <?php if( $options['facebook_send']['font'] == 'trebuchet ms' ) echo 'selected'; ?>>trebuchet ms</option>
+            <option value='verdana' <?php if( $options['facebook_send']['font'] == 'verdana' ) echo 'selected'; ?>>verdana</option>
+            </select>
+            </td>
+            </tr>
+            <tr>
+            <th scope="row">Color Scheme:</th>
+            <td>
+            <select name='facebook_send_colorscheme'>
+            <option value='light' <?php if( $options['facebook_send']['colorscheme'] == 'light' ) echo 'selected'; ?>>light</option>
+            <option value='dark' <?php if( $options['facebook_send']['colorscheme'] == 'dark' ) echo 'selected'; ?>>dark</option>
+            </select>
+            </td>
+            </tr>
+            </table>
+        </div>
+
     </div>
     <p class="submit">
     <input class="button-primary" type="submit" name='save' value='<?php _e('Save Changes') ?>' />
@@ -1060,6 +1110,7 @@ function wp_social_bookmarking_light_options_page()
     <tr><td>friendfeed</td><td>FriendFeed</td></tr>
     <tr><td>facebook</td><td>Facebook Share</td></tr>
     <tr><td>facebook_like</td><td>Facebook Like Button</td></tr>
+    <tr><td>facebook_send</td><td>Facebook Send Button</td></tr>
     <tr><td>reddit</td><td>reddit</td></tr>
     <tr><td>linkedin</td><td>LinkedIn</td></tr>
     <tr><td>evernote</td><td>Evernote</td></tr>
