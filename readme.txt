@@ -17,6 +17,7 @@ This is the list of used social sites:
 *  Hatena
 *  Facebook
 *  Facebook Like Button
+*  Facebook Send Button
 *  Twitter
 *  Livedoor Clip
 *  BuzzURL
